@@ -19,6 +19,7 @@
     "@types/koa-multer": "^1.0.0",
     "@types/koa-router": "^7.0.27",
     "@types/mocha": "^2.2.48",
+    "@types/node": "^11.11.7",
     "@types/socket.io": "^1.4.32",
     "bcrypt": "^3.0.4",
     "jsonwebtoken": "^8.2.0",
