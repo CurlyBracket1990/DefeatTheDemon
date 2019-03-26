@@ -40,7 +40,8 @@ export type Board = [ Row, Row, Row ]
 type Status = 'pending' | 'started' | 'finished'
 
 const emptyRow: Row = [null, null, null]
-const emptyBoard: Board = [ emptyRow, emptyRow, emptyRow ]
+const startRow: Row = ["x", null, "y"]
+const emptyBoard: Board = [ emptyRow, emptyRow, startRow ]
 
 @Entity()
 export class Game extends BaseEntity {

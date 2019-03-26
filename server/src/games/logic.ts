@@ -14,7 +14,7 @@ export class IsBoard implements ValidatorConstraintInterface {
   }
 }
 
-export const isValidTransition = (playerSymbol: Champion["symbol"], from: Board, to: Board) => {
+export const isValidTransition = (/*playerSymbol: Champion["symbol"],*/ from: Board, to: Board) => {
   const changes = from
     .map(
       (row, rowIndex) => row.map((symbol, columnIndex) => ({
@@ -25,10 +25,9 @@ export const isValidTransition = (playerSymbol: Champion["symbol"], from: Board,
     .reduce((a,b) => a.concat(b))
     .filter(change => change.from !== change.to)
 
-  return changes.length === 1 && 
-    changes[0].to === playerSymbol && 
-    changes[0].from === null
+  return changes.length > 0 
 }
+
 
 // export const calculateWinner = (board: Board): Symbol | null =>
 //   board

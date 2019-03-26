@@ -85,34 +85,35 @@ export default class GameController {
     if (!game) throw new NotFoundError(`Game does not exist`)
 
     const player = await Player.findOne({ user, game })
-
+    
     if (!player) throw new ForbiddenError(`You are not part of this game`)
     if (game.status !== 'started') throw new BadRequestError(`The game is not started yet`)
     if (player.symbol !== game.turn) throw new BadRequestError(`It's not your turn`)
-    if (!isValidTransition(player.symbol, game.board, update.board)) {
+    if (!isValidTransition(/*player.symbol,*/ game.board, update.board)) {
       throw new BadRequestError(`Invalid move`)
     }    
 
-    // const winner = calculateWinner(update.board)
-    // if (winner) {
+    const winner = false
+    if (winner) {
     //   game.winner = winner
     //   game.status = 'finished'
     // }
     // else if (finished(update.board)) {
     //   game.status = 'finished'
-    // }
-    // else {
-    //   game.turn = player.symbol === 'x' ? 'o' : 'x'
-    // }
-    // game.board = update.board
-    // await game.save()
+    }
+    else {
+      game.turn = player.symbol === 'x' ? 'y' : 'x'
+    }
+    game.board = update.board
+    await game.save()
     
-    // io.emit('action', {
-    //   type: 'UPDATE_GAME',
-    //   payload: game
-    // })
+    io.emit('action', {
+      type: 'UPDATE_GAME',
+      payload: game
+    })
 
-    // return game
+
+    return game
   }
 
   @Authorized()
