@@ -2,6 +2,7 @@ import React from 'react'
 import './Board.css'
 
 const renderCel = (makeMove, rowIndex, cellIndex, symbol, hasTurn) => {
+
   return (
     <button
       className="board-tile"

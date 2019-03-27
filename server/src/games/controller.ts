@@ -4,9 +4,10 @@ import {
 } from 'routing-controllers'
 import User from '../users/entity'
 import { Game, Player, Board } from './entities'
-import {IsBoard, isValidTransition} from './logic'
+import {IsBoard, isValidTransition, calculateWinner, updateEnemyCount} from './logic'
 import { Validate } from 'class-validator'
 import {io} from '../index'
+// import { Entity } from 'typeorm';
 
 class GameUpdate {
 
@@ -14,6 +15,9 @@ class GameUpdate {
     message: 'Not a valid board'
   })
   board: Board
+  playerPos: [number]
+  newPlayerPos: [number]
+  newPosSymbol: string
 }
 
 @JsonController()
@@ -25,7 +29,10 @@ export default class GameController {
   async createGame(
     @CurrentUser() user: User
   ) {
-    const entity = await Game.create().save()
+    
+    const entity = await Game.create()
+    await (entity.enemyCount = 0)
+    await entity.save()
 
     await Player.create({
       game: entity, 
@@ -34,12 +41,10 @@ export default class GameController {
     }).save()
 
     const game = await Game.findOneById(entity.id)
-
     io.emit('action', {
       type: 'ADD_GAME',
       payload: game
     })
-
     return game
   }
 
@@ -51,10 +56,23 @@ export default class GameController {
     @Param('id') gameId: number
   ) {
     const game = await Game.findOneById(gameId)
+    let enemyCount = 0
+    if(game){
+      game.board.map(
+        (row) => row.map((cell) => {
+          if (cell === ">") {
+            enemyCount = enemyCount + 1
+            return null
+          }
+          return null
+        })
+      )
+    }
     if (!game) throw new BadRequestError(`Game does not exist`)
     if (game.status !== 'pending') throw new BadRequestError(`Game is already started`)
 
     game.status = 'started'
+    game.enemyCount = enemyCount
     await game.save()
 
     const player = await Player.create({
@@ -85,34 +103,35 @@ export default class GameController {
     if (!game) throw new NotFoundError(`Game does not exist`)
 
     const player = await Player.findOne({ user, game })
-
     if (!player) throw new ForbiddenError(`You are not part of this game`)
     if (game.status !== 'started') throw new BadRequestError(`The game is not started yet`)
     if (player.symbol !== game.turn) throw new BadRequestError(`It's not your turn`)
-    if (!isValidTransition(player.symbol, game.board, update.board)) {
+    if (!isValidTransition(player.symbol, game.board, update.board, update.playerPos, update.newPlayerPos, update.newPosSymbol)) {
       throw new BadRequestError(`Invalid move`)
     }    
+    
+    game.enemyCount = updateEnemyCount(update.board)
 
-    // const winner = calculateWinner(update.board)
-    // if (winner) {
-    //   game.winner = winner
-    //   game.status = 'finished'
-    // }
+    const winner = calculateWinner(game.enemyCount)
+    if (winner) {
+      game.defeatedTheDemon = true
+      game.status = 'Level completed!'
+    }
     // else if (finished(update.board)) {
     //   game.status = 'finished'
     // }
-    // else {
-    //   game.turn = player.symbol === 'x' ? 'o' : 'x'
-    // }
-    // game.board = update.board
-    // await game.save()
+    else {
+      game.turn = player.symbol === 'x' ? 'y' : 'x'
+    }
+    game.board = update.board
+    await game.save()
     
-    // io.emit('action', {
-    //   type: 'UPDATE_GAME',
-    //   payload: game
-    // })
+    io.emit('action', {
+      type: 'UPDATE_GAME',
+      payload: game
+    })
 
-    // return game
+    return game
   }
 
   @Authorized()

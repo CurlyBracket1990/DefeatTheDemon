@@ -1,9 +1,9 @@
-import React, {PureComponent} from 'react'
-import {connect} from 'react-redux'
-import {Redirect} from 'react-router-dom'
-import {getGames, joinGame, updateGame} from '../../actions/games'
-import {getUsers} from '../../actions/users'
-import {userId} from '../../jwt'
+import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
+import { getGames, joinGame, updateGame } from '../../actions/games'
+import { getUsers } from '../../actions/users'
+import { userId } from '../../jwt'
 import Paper from '@material-ui/core/Paper'
 import Board from './Board'
 import './GameDetails.css'
@@ -20,25 +20,46 @@ class GameDetails extends PureComponent {
   joinGame = () => this.props.joinGame(this.props.game.id)
 
   makeMove = (toRow, toCell) => {
-    const {game, updateGame} = this.props
+    const { game, updateGame } = this.props
+    let playerPos = []
+    let newPlayerPos = []
+    let newPosSymbol = ""
+
+    game.board.map(
+      (row, rowIndex) => row.map((cell, cellIndex) => {
+        if (rowIndex === toRow && cellIndex === toCell) {
+          newPosSymbol = cell
+          return newPlayerPos = [toRow, toCell]
+        }
+        if (cell === game.turn) {
+          return playerPos = [rowIndex, cellIndex]
+        }
+        return null
+      })
+    )
 
     const board = game.board.map(
       (row, rowIndex) => row.map((cell, cellIndex) => {
-        if (rowIndex === toRow && cellIndex === toCell) return game.turn
+        if (rowIndex === toRow && cellIndex === toCell) {
+          return game.turn
+        }
+        if (cell === game.turn) {
+          return null
+        }
         else return cell
       })
     )
-    updateGame(game.id, board)
+    updateGame(game.id, board, playerPos, newPlayerPos, newPosSymbol)
   }
 
 
 
   render() {
-    const {game, users, authenticated, userId} = this.props
+    const { game, users, authenticated, userId } = this.props
 
     if (!authenticated) return (
-			<Redirect to="/login" />
-		)
+      <Redirect to="/login" />
+    )
 
     if (game === null || users === null) return 'Loading...'
     if (!game) return 'Not found'
