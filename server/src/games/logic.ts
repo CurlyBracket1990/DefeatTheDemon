@@ -8,10 +8,23 @@ export class IsBoard implements ValidatorConstraintInterface {
     const datas = ["x", "y", null, "<", "v", "^", ">"]
     return board.length === 5 &&
       board.every(row =>
-        row.length === 5 &&
+        row.length === 6 &&
         row.every(tile => datas.includes(tile))
       )
   }
+}
+
+export const updateEnemyCount = (board) => {
+  let enemyCount = 0
+  board.map((row) => {
+    row.map((cell) => {
+      if(cell === "v" || cell === ">" || cell === "^" || cell === "<"){
+        enemyCount = enemyCount +1
+      }
+      return null
+    })
+  })
+  return enemyCount
 }
 
 export const isValidTransition = (playerSymbol: Champion["symbol"], from: Board, to: Board, playerPos: number[], newPlayerPos: number[], newPosSymbol: string) => {
@@ -34,7 +47,6 @@ export const isValidTransition = (playerSymbol: Champion["symbol"], from: Board,
 }
 
 export const battleWinner = (playerPos, newPlayerPos, newPosSymbol) => {
-  console.log(newPosSymbol, "NEWPOSSYBOLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL")
   if (newPosSymbol === ">") {
     if (playerPos[1] - 1 === newPlayerPos[1]) {
       return false

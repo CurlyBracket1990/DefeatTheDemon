@@ -25,6 +25,7 @@ class GameDetails extends PureComponent {
 
   joinGame = () => this.props.joinGame(this.props.game.id)
 
+
   enemyImage = (symbol) =>  {
     if (symbol === "<") {
       return <img src = {demonLeftImage} alt="<"/>
