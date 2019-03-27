@@ -3,10 +3,11 @@ import {
   Body, Patch 
 } from 'routing-controllers'
 import User from '../users/entity'
-import { Game, Player, Board } from './entities'
-import {IsBoard, isValidTransition} from './logic'
+import { Game, Player, Board, Enemy } from './entities'
+import {IsBoard, isValidTransition, calculateWinner} from './logic'
 import { Validate } from 'class-validator'
 import {io} from '../index'
+import { Entity } from 'typeorm';
 
 class GameUpdate {
 
@@ -27,8 +28,10 @@ export default class GameController {
   async createGame(
     @CurrentUser() user: User
   ) {
-    console.log('HELLOOO')
-    const entity = await Game.create().save()
+    
+    const entity = await Game.create()
+    await (entity.enemyCount = 0)
+    await entity.save()
 
     await Player.create({
       game: entity, 
@@ -37,12 +40,10 @@ export default class GameController {
     }).save()
 
     const game = await Game.findOneById(entity.id)
-
     io.emit('action', {
       type: 'ADD_GAME',
       payload: game
     })
-
     return game
   }
 
@@ -54,10 +55,23 @@ export default class GameController {
     @Param('id') gameId: number
   ) {
     const game = await Game.findOneById(gameId)
+    let enemyCount = 0
+    if(game){
+      game.board.map(
+        (row) => row.map((cell) => {
+          if (cell === ">") {
+            enemyCount = enemyCount + 1
+            return null
+          }
+          return null
+        })
+      )
+    }
     if (!game) throw new BadRequestError(`Game does not exist`)
     if (game.status !== 'pending') throw new BadRequestError(`Game is already started`)
 
     game.status = 'started'
+    game.enemyCount = enemyCount
     await game.save()
 
     const player = await Player.create({
@@ -95,7 +109,7 @@ export default class GameController {
       throw new BadRequestError(`Invalid move`)
     }    
 
-    const winner = false
+    const winner = calculateWinner
     if (winner) {
       // game.winner = winner
       // game.status = 'finished'

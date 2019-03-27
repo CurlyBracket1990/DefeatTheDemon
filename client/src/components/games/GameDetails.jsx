@@ -1,9 +1,9 @@
-import React, {PureComponent} from 'react'
-import {connect} from 'react-redux'
-import {Redirect} from 'react-router-dom'
-import {getGames, joinGame, updateGame} from '../../actions/games'
-import {getUsers} from '../../actions/users'
-import {userId} from '../../jwt'
+import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
+import { getGames, joinGame, updateGame } from '../../actions/games'
+import { getUsers } from '../../actions/users'
+import { userId } from '../../jwt'
 import Paper from '@material-ui/core/Paper'
 import Board from './Board'
 import './GameDetails.css'
@@ -19,26 +19,66 @@ class GameDetails extends PureComponent {
 
   joinGame = () => this.props.joinGame(this.props.game.id)
 
-  makeMove = (toRow, toCell) => {
-    const {game, updateGame} = this.props
-
+  renderEnemies = () => {
+    const playerPos = [0, 0]
+    const newPlayerPos = [0, 0]
+    const { game, updateGame } = this.props
+    let enemyCount = 0
     const board = game.board.map(
-      (row, rowIndex) => row.map((cell, cellIndex) => {
-        if (rowIndex === toRow && cellIndex === toCell) return game.turn
+      (row) => row.map((cell) => {
+        if (cell !== "x" || cell !== "y" || enemyCount > 2) {
+          const randomNum = Math.floor(Math.random() * 11)
+          if(randomNum < 1) {
+            enemyCount++
+          return "V"
+          }
+          return cell
+        }
         else return cell
       })
     )
-    updateGame(game.id, board)
+    updateGame(game.id, board, playerPos, newPlayerPos)
+  }
+
+  makeMove = (toRow, toCell) => {
+    const { game, updateGame } = this.props
+    let playerPos = []
+    let newPlayerPos = []
+
+    game.board.map(
+      (row, rowIndex) => row.map((cell, cellIndex) => {
+        if (rowIndex === toRow && cellIndex === toCell) {
+          return newPlayerPos = [toRow, toCell]
+        }
+        if (cell === game.turn) {
+          return playerPos = [rowIndex, cellIndex]
+        }
+        return null
+      })
+    )
+
+    const board = game.board.map(
+      (row, rowIndex) => row.map((cell, cellIndex) => {
+        if (rowIndex === toRow && cellIndex === toCell) {
+          return game.turn
+        }
+        if (cell === game.turn) {
+          return null
+        }
+        else return cell
+      })
+    )
+    updateGame(game.id, board, playerPos, newPlayerPos)
   }
 
 
 
   render() {
-    const {game, users, authenticated, userId} = this.props
+    const { game, users, authenticated, userId } = this.props
 
     if (!authenticated) return (
-			<Redirect to="/login" />
-		)
+      <Redirect to="/login" />
+    )
 
     if (game === null || users === null) return 'Loading...'
     if (!game) return 'Not found'

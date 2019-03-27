@@ -39,13 +39,16 @@ export type Board = [ Row, Row, Row, Row, Row ]
 
 type Status = 'pending' | 'started' | 'finished'
 
+let enemyCount = 0
+
 const createRandomEnemy = () => {
   const randomNumber = Math.random()
   switch (true) {
-    case randomNumber < 0.5:
+    case randomNumber < 0.7:
       return null
   
-    case randomNumber > 0.5:
+    case randomNumber > 0.7 && enemyCount < 3:
+      enemyCount++
       return '>'
 
     default:
@@ -53,10 +56,16 @@ const createRandomEnemy = () => {
   }
 }
 
-const emptyRow: Row = [null, null, null, null, null]
-const startRow: Row = ["x", null, null, null, "y"]
-const spawnRow: Row = [createRandomEnemy(), createRandomEnemy(), '^', createRandomEnemy(), createRandomEnemy()]
-const emptyBoard: Board = [ spawnRow, spawnRow, emptyRow, spawnRow, startRow ]
+const createRandomRow = () => {
+  return [createRandomEnemy(), createRandomEnemy(), createRandomEnemy(), createRandomEnemy(), createRandomEnemy()]
+}
+
+const row1: Row = createRandomRow()
+const row5: Row = ["x", null, null, null, "y"]
+const row3: Row = createRandomRow()
+const row4: Row = createRandomRow()
+const row2: Row = createRandomRow()
+const emptyBoard: Board = [ row1, row2, row3, row4, row5 ]
 
 @Entity()
 export class Game extends BaseEntity {
@@ -73,7 +82,10 @@ export class Game extends BaseEntity {
   @Column('text', {nullable: true})
   enemy: Enemy
 
-  @Column('boolean', {nullable: true})
+  @Column('integer', {nullable: true})
+  enemyCount: number
+
+  @Column('boolean', {nullable: true, default: false})
   defeatedTheDemon: boolean
 
   @Column('text', {default: 'pending'})
