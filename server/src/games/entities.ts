@@ -34,13 +34,29 @@ export class Enemy {
 // export type Content = Champion | Enemy | null
 
 export type Content = "x" | "y" | null | "<" | "v" | "^" | ">"
-export type Row = [Content, Content, Content ]
-export type Board = [ Row, Row, Row ]
+export type Row = [Content, Content, Content, Content, Content ]
+export type Board = [ Row, Row, Row, Row, Row ]
 
 type Status = 'pending' | 'started' | 'finished'
 
-const emptyRow: Row = [null, null, null]
-const emptyBoard: Board = [ emptyRow, emptyRow, emptyRow ]
+const createRandomEnemy = () => {
+  const randomNumber = Math.random()
+  switch (true) {
+    case randomNumber < 0.5:
+      return null
+  
+    case randomNumber > 0.5:
+      return '>'
+
+    default:
+      return null
+  }
+}
+
+const emptyRow: Row = [null, null, null, null, null]
+const startRow: Row = ["x", null, null, null, "y"]
+const spawnRow: Row = [createRandomEnemy(), createRandomEnemy(), '^', createRandomEnemy(), createRandomEnemy()]
+const emptyBoard: Board = [ spawnRow, spawnRow, emptyRow, spawnRow, startRow ]
 
 @Entity()
 export class Game extends BaseEntity {
@@ -51,7 +67,7 @@ export class Game extends BaseEntity {
   @Column('json', {default: emptyBoard})
   board: Board
 
-  @Column('char', { default: 'y'})
+  @Column('char', { default: 'x'})
   turn: Champion["symbol"]
 
   @Column('text', {nullable: true})

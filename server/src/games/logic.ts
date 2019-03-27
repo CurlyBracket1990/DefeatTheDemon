@@ -6,15 +6,15 @@ export class IsBoard implements ValidatorConstraintInterface {
 
   validate(board: Board) {
     const datas = [ "x", "y", null, "<", "v", "^", ">" ]
-    return board.length === 3 &&
+    return board.length === 5 &&
       board.every(row =>
-        row.length === 3 &&
+        row.length === 5 &&
         row.every(tile => datas.includes(tile))
       )
   }
 }
 
-export const isValidTransition = (playerSymbol: Champion["symbol"], from: Board, to: Board) => {
+export const isValidTransition = (playerSymbol: Champion["symbol"], from: Board, to: Board, playerPos:number[], newPlayerPos:number[]) => {
   const changes = from
     .map(
       (row, rowIndex) => row.map((symbol, columnIndex) => ({
@@ -25,9 +25,28 @@ export const isValidTransition = (playerSymbol: Champion["symbol"], from: Board,
     .reduce((a,b) => a.concat(b))
     .filter(change => change.from !== change.to)
 
-  return changes.length === 1 && 
-    changes[0].to === playerSymbol && 
-    changes[0].from === null
+
+    // from.map(
+    //   (row, rowIndex) => row.map((cell, cellIndex) => {
+    //     if (rowIndex === toRow && cellIndex === toCell) {
+    //       return newPlayerPos = [toRow, toCell]
+    //     }
+    //     if (cell === game.turn) {
+    //       return playerPos = [rowIndex, cellIndex]
+    //     }
+    //   })
+    // )
+
+  return changes.length < 3 
+  && ((playerPos[0]-1 === newPlayerPos[0] && playerPos[1] === newPlayerPos[1])
+  || (playerPos[0]+1 === newPlayerPos[0] && playerPos[1] === newPlayerPos[1])
+  || (playerPos[0] === newPlayerPos[0] && playerPos[1]-1 === newPlayerPos[1])
+  || (playerPos[0] === newPlayerPos[0] && playerPos[1]+1 === newPlayerPos[1]))
+  // && 
+  //   changes[0].to === null || 
+  //   changes[0].from === playerSymbol &&
+  //   changes[1].to === playerSymbol && 
+  //   changes[1].from === playerSymbol
 }
 
 // export const calculateWinner = (board: Board): Symbol | null =>
