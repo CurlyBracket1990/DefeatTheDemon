@@ -15,12 +15,6 @@ export class Champion {
   damage = 1 + this.weapon.damage + this.levelChampion
   symbol = ""
  }
- 
-//  export class Enemy {
-//   health = 10
-//   levelEnemy = Math.round(Math.random()*10)
-//   damage = this.levelEnemy
-//  }
 
 export class Enemy {
   direction = {
@@ -30,8 +24,6 @@ export class Enemy {
   Up : "^"
   }
 }
-
-// export type Content = Champion | Enemy | null
 
 export type Content = "x" | "y" | null | "<" | "v" | "^" | ">"
 export type Row = [Content, Content, Content, Content, Content ]
@@ -44,13 +36,21 @@ let enemyCount = 0
 const createRandomEnemy = () => {
   const randomNumber = Math.random()
   switch (true) {
-    case randomNumber < 0.7:
+    case randomNumber <= 0.6:
       return null
   
-    case randomNumber > 0.7 && enemyCount < 3:
+    case randomNumber > 0.6 && randomNumber <= 0.7 && enemyCount < 6:
       enemyCount++
       return '>'
-
+    case randomNumber > 0.7 && randomNumber <= 0.8 && enemyCount < 6:
+      enemyCount++
+      return '<'
+    case randomNumber > 0.8 && randomNumber <= 0.9 && enemyCount < 6:
+      enemyCount++
+      return '^'
+    case randomNumber > 0.9 && enemyCount < 6:
+      enemyCount++
+      return 'v'
     default:
       return null
   }
@@ -65,7 +65,7 @@ const row5: Row = ["x", null, null, null, "y"]
 const row3: Row = createRandomRow()
 const row4: Row = createRandomRow()
 const row2: Row = createRandomRow()
-const emptyBoard: Board = [ row1, row2, row3, row4, row5 ]
+let emptyBoard: Board = [ row1, row2, row3, row4, row5 ]
 
 @Entity()
 export class Game extends BaseEntity {

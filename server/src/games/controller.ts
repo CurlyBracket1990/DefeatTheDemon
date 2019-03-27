@@ -99,6 +99,7 @@ export default class GameController {
     @Param('id') gameId: number,
     @Body() update: GameUpdate
   ) {
+    console.log(update.board, "BOARDDD")
     const game = await Game.findOneById(gameId)
     if (!game) throw new NotFoundError(`Game does not exist`)
 

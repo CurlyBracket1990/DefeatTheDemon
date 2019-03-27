@@ -37,13 +37,33 @@ export const battleWinner = (playerPos, newPlayerPos, newPosSymbol) => {
   console.log(newPosSymbol, "NEWPOSSYBOLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL")
   if (newPosSymbol === ">") {
     if (playerPos[1] - 1 === newPlayerPos[1]) {
-      // console.log("yes enemy")
       return false
     }
     return true
   }
+  else if (newPosSymbol === "<") {
+    if (playerPos[1] + 1 === newPlayerPos[1]) {
+      return false
+    }
+    return true
+  }
+  else if (newPosSymbol === "^") {
+    if (playerPos[0] + 1 === newPlayerPos[0]) {
+      return false
+    }
+    return true
+  }
+  else if (newPosSymbol === "v") {
+    if (playerPos[0] - 1 === newPlayerPos[0]) {
+      return false
+    }
+    return true
+  }
+  else if (newPosSymbol === "x" || newPosSymbol === "y") {
+      return false
+  }
+  
   else {
-    // console.log("no enemy")
     return true
   }
 }

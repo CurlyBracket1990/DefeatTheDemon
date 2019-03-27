@@ -1,7 +1,7 @@
 import React from 'react'
 import './Board.css'
 
-const renderCel = (makeMove, rowIndex, cellIndex, symbol, hasTurn) => {
+const renderCel = (makeMove, rowIndex, cellIndex, symbol, hasTurn, enemyImage) => {
 
   return (
     <button
@@ -9,12 +9,14 @@ const renderCel = (makeMove, rowIndex, cellIndex, symbol, hasTurn) => {
       disabled={hasTurn}
       onClick={() => makeMove(rowIndex, cellIndex)}
       key={`${rowIndex}-${cellIndex}`}
-    >{symbol || '-'}</button>
+    >{enemyImage(symbol)}</button>
   )
 }
 
-export default ({board, makeMove}) => board.map((cells, rowIndex) =>
+export default ({board, makeMove, enemyImage}) => board.map((cells, rowIndex) =>
   <div key={rowIndex}>
-    {cells.map((symbol, cellIndex) => renderCel(makeMove, rowIndex, cellIndex,symbol,false))}
+    {cells.map((symbol, cellIndex) => renderCel(makeMove, rowIndex, cellIndex,symbol,false, enemyImage))}
   </div>
 )
+
+
