@@ -53,6 +53,28 @@ export const battleWinner = (playerPos, newPlayerPos, newPosSymbol) => {
     }
     return true
   }
+  else if (newPosSymbol === "<") {
+    if (playerPos[1] + 1 === newPlayerPos[1]) {
+      return false
+    }
+    return true
+  }
+  else if (newPosSymbol === "^") {
+    if (playerPos[0] + 1 === newPlayerPos[0]) {
+      return false
+    }
+    return true
+  }
+  else if (newPosSymbol === "v") {
+    if (playerPos[0] - 1 === newPlayerPos[0]) {
+      return false
+    }
+    return true
+  }
+  else if (newPosSymbol === "x" || newPosSymbol === "y") {
+      return false
+  }
+  
   else {
     return true
   }

@@ -7,9 +7,15 @@ import { userId } from '../../jwt'
 import Paper from '@material-ui/core/Paper'
 import Board from './Board'
 import './GameDetails.css'
+import demonLeftImage from '../../images/enemies/demonLeft.png'
+import demonRightImage from '../../images/enemies/demonRight.png'
+import demonFrontImage from '../../images/enemies/demonFront.png'
+import demonBackImage from '../../images/enemies/demonBack.png'
+import necroImage from '../../images/champions/necro.png'
+import monkImage from '../../images/champions/monk.png'
+import terrainImage from '../../images/terrains/terrain1.png'
 
 class GameDetails extends PureComponent {
-
   componentWillMount() {
     if (this.props.authenticated) {
       if (this.props.game === null) this.props.getGames()
@@ -18,6 +24,24 @@ class GameDetails extends PureComponent {
   }
 
   joinGame = () => this.props.joinGame(this.props.game.id)
+
+
+  enemyImage = (symbol) =>  {
+    if (symbol === "<") {
+      return <img src = {demonLeftImage} alt="<"/>
+    } else if (symbol === ">") {
+      return <img src = {demonRightImage} alt=">"/>
+    } else if (symbol === "^") {
+      return <img src = {demonBackImage} alt="^"/>
+    } else if (symbol === "v") {
+      return <img src = {demonFrontImage} alt="v"/>
+    }else if (symbol === "y") {
+      return <img src = {necroImage} alt="y"/>
+    }else if (symbol === "x") {
+      return <img src = {monkImage} alt="x"/>
+    }
+    else return <img src = {terrainImage} alt="-"/>
+  }
 
   makeMove = (toRow, toCell) => {
     const { game, updateGame } = this.props
@@ -96,7 +120,7 @@ class GameDetails extends PureComponent {
 
       {
         game.status !== 'pending' &&
-        <Board board={game.board} makeMove={this.makeMove} />
+        <Board board={game.board} makeMove={this.makeMove} enemyImage={this.enemyImage}/>
       }
     </Paper>)
   }
@@ -114,3 +138,26 @@ const mapDispatchToProps = {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameDetails)
+
+
+
+  // renderEnemies = () => {
+  //   const playerPos = [0, 0]
+  //   const newPlayerPos = [0, 0]
+  //   const { game, updateGame } = this.props
+  //   let enemyCount = 0
+  //   const board = game.board.map(
+  //     (row) => row.map((cell) => {
+  //       if (cell !== "x" || cell !== "y" || enemyCount > 2) {
+  //         const randomNum = Math.floor(Math.random() * 11)
+  //         if(randomNum < 1) {
+  //           enemyCount++
+  //         return "V"
+  //         }
+  //         return cell
+  //       }
+  //       else return cell
+  //     })
+  //   )
+  //   updateGame(game.id, board, playerPos, newPlayerPos)
+  // }
