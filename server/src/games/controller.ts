@@ -4,7 +4,7 @@ import {
 } from 'routing-controllers'
 import User from '../users/entity'
 import { Game, Player, Board } from './entities'
-import {IsBoard, isValidTransition, calculateWinner} from './logic'
+import {IsBoard, isValidTransition, calculateWinner, updateEnemyCount} from './logic'
 import { Validate } from 'class-validator'
 import {io} from '../index'
 // import { Entity } from 'typeorm';
@@ -109,11 +109,13 @@ export default class GameController {
     if (!isValidTransition(player.symbol, game.board, update.board, update.playerPos, update.newPlayerPos, update.newPosSymbol)) {
       throw new BadRequestError(`Invalid move`)
     }    
+    
+    game.enemyCount = updateEnemyCount(update.board)
 
     const winner = calculateWinner(game.enemyCount)
     if (winner) {
       game.defeatedTheDemon = true
-      game.status = 'finished'
+      game.status = 'Level completed!'
     }
     // else if (finished(update.board)) {
     //   game.status = 'finished'

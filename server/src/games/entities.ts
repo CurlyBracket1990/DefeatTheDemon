@@ -34,10 +34,10 @@ export class Enemy {
 // export type Content = Champion | Enemy | null
 
 export type Content = "x" | "y" | null | "<" | "v" | "^" | ">"
-export type Row = [Content, Content, Content, Content, Content ]
+export type Row = [Content, Content, Content, Content, Content, Content ]
 export type Board = [ Row, Row, Row, Row, Row ]
 
-type Status = 'pending' | 'started' | 'finished'
+type Status = 'pending' | 'started' | 'Level completed!'
 
 let enemyCount = 0
 
@@ -57,11 +57,11 @@ const createRandomEnemy = () => {
 }
 
 const createRandomRow = () => {
-  return [createRandomEnemy(), createRandomEnemy(), createRandomEnemy(), createRandomEnemy(), createRandomEnemy()]
+  return [createRandomEnemy(), createRandomEnemy(), createRandomEnemy(), createRandomEnemy(), createRandomEnemy(), createRandomEnemy()]
 }
 
 const row1: Row = createRandomRow()
-const row5: Row = ["x", null, null, null, "y"]
+const row5: Row = ["x", null, null, null, null, "y"]
 const row3: Row = createRandomRow()
 const row4: Row = createRandomRow()
 const row2: Row = createRandomRow()

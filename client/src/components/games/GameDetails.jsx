@@ -19,27 +19,6 @@ class GameDetails extends PureComponent {
 
   joinGame = () => this.props.joinGame(this.props.game.id)
 
-  renderEnemies = () => {
-    const playerPos = [0, 0]
-    const newPlayerPos = [0, 0]
-    const { game, updateGame } = this.props
-    let enemyCount = 0
-    const board = game.board.map(
-      (row) => row.map((cell) => {
-        if (cell !== "x" || cell !== "y" || enemyCount > 2) {
-          const randomNum = Math.floor(Math.random() * 11)
-          if(randomNum < 1) {
-            enemyCount++
-          return "V"
-          }
-          return cell
-        }
-        else return cell
-      })
-    )
-    updateGame(game.id, board, playerPos, newPlayerPos)
-  }
-
   makeMove = (toRow, toCell) => {
     const { game, updateGame } = this.props
     let playerPos = []
