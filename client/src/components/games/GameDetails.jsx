@@ -44,10 +44,12 @@ class GameDetails extends PureComponent {
     const { game, updateGame } = this.props
     let playerPos = []
     let newPlayerPos = []
+    let newPosSymbol = ""
 
     game.board.map(
       (row, rowIndex) => row.map((cell, cellIndex) => {
         if (rowIndex === toRow && cellIndex === toCell) {
+          newPosSymbol = cell
           return newPlayerPos = [toRow, toCell]
         }
         if (cell === game.turn) {
@@ -68,7 +70,7 @@ class GameDetails extends PureComponent {
         else return cell
       })
     )
-    updateGame(game.id, board, playerPos, newPlayerPos)
+    updateGame(game.id, board, playerPos, newPlayerPos, newPosSymbol)
   }
 
 

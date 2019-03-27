@@ -68,7 +68,7 @@ export const createGame = () => (dispatch, getState) => {
     .catch(err => console.error(err))
 }
 
-export const updateGame = (gameId, board, playerPos, newPlayerPos) => (dispatch, getState) => {
+export const updateGame = (gameId, board, playerPos, newPlayerPos, newPosSymbol) => (dispatch, getState) => {
   const state = getState()
   const jwt = state.currentUser.jwt
 
@@ -77,7 +77,7 @@ export const updateGame = (gameId, board, playerPos, newPlayerPos) => (dispatch,
   request
     .patch(`${baseUrl}/games/${gameId}`)
     .set('Authorization', `Bearer ${jwt}`)
-    .send({ board, playerPos, newPlayerPos })
+    .send({ board, playerPos, newPlayerPos, newPosSymbol })
     .then(_ => { 
       dispatch(updateGameSuccess())
     }

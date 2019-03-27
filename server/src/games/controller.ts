@@ -3,11 +3,11 @@ import {
   Body, Patch 
 } from 'routing-controllers'
 import User from '../users/entity'
-import { Game, Player, Board, Enemy } from './entities'
+import { Game, Player, Board } from './entities'
 import {IsBoard, isValidTransition, calculateWinner} from './logic'
 import { Validate } from 'class-validator'
 import {io} from '../index'
-import { Entity } from 'typeorm';
+// import { Entity } from 'typeorm';
 
 class GameUpdate {
 
@@ -17,6 +17,7 @@ class GameUpdate {
   board: Board
   playerPos: [number]
   newPlayerPos: [number]
+  newPosSymbol: string
 }
 
 @JsonController()
@@ -105,14 +106,14 @@ export default class GameController {
     if (!player) throw new ForbiddenError(`You are not part of this game`)
     if (game.status !== 'started') throw new BadRequestError(`The game is not started yet`)
     if (player.symbol !== game.turn) throw new BadRequestError(`It's not your turn`)
-    if (!isValidTransition(player.symbol, game.board, update.board, update.playerPos, update.newPlayerPos)) {
+    if (!isValidTransition(player.symbol, game.board, update.board, update.playerPos, update.newPlayerPos, update.newPosSymbol)) {
       throw new BadRequestError(`Invalid move`)
     }    
 
-    const winner = calculateWinner
+    const winner = calculateWinner(game.enemyCount)
     if (winner) {
-      // game.winner = winner
-      // game.status = 'finished'
+      game.defeatedTheDemon = true
+      game.status = 'finished'
     }
     // else if (finished(update.board)) {
     //   game.status = 'finished'
