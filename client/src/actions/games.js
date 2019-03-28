@@ -55,7 +55,7 @@ export const joinGame = (gameId) => (dispatch, getState) => {
     .catch(err => console.error(err))
 }
 
-export const createGame = () => (dispatch, getState) => {
+export const createGame = (history) => (dispatch, getState) => {
   const state = getState()
   const jwt = state.currentUser.jwt
 
@@ -64,7 +64,10 @@ export const createGame = () => (dispatch, getState) => {
   request
     .post(`${baseUrl}/games`)
     .set('Authorization', `Bearer ${jwt}`)
-    .then(result => dispatch(addGame(result.body)))
+    .then(result => {
+      dispatch(addGame(result.body))
+      history.push(`/games/${result.body.id}`)
+    })
     .catch(err => console.error(err))
 }
 
