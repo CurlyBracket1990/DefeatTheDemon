@@ -26,7 +26,10 @@ componentWillMount() {
   }
 }
 
-joinGame = () => this.props.joinGame(this.props.game.id)
+joinGame = (symbol) => {
+  console.log(symbol)
+  this.props.joinGame(this.props.game.id, symbol)
+}
 
 
 enemyImage = (symbol) => {
@@ -109,12 +112,6 @@ render() {
     }
 
     {
-      game.status === 'pending' &&
-      game.players.map(p => p.userId).indexOf(userId) === -1 &&
-      <button onClick={this.joinGame}>Join Game</button>
-    }
-
-    {
       winner &&
       <p>Winner: {users[winner].firstName}</p>
     }
@@ -122,10 +119,11 @@ render() {
     <hr />
 
     {
+      game.status !== 'pending' &&
       <PlayerManual />
     }
     {
-      game.status === 'pending' && <ImageSelection player = {player} />  
+      game.status === 'pending' && <ImageSelection game = {game} userId = {userId} joinGame={this.joinGame} player={player} />  
     }
     <div className="container">
     <div>

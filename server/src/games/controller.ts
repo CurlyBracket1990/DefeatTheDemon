@@ -7,8 +7,6 @@ import { Game, Player, Board } from './entities'
 import { IsBoard, isValidTransition, calculateWinner, tryToAttackPlayer, updateEnemyCount, battleWinner, createNewBoard, startNewLevel } from './logic'
 import { Validate } from 'class-validator'
 import { io } from '../index'
-// import { AdvancedConsoleLogger } from 'typeorm';
-// import { Entity } from 'typeorm';
 
 class GameUpdate {
 
@@ -38,7 +36,7 @@ export default class GameController {
     await Player.create({
       game: entity,
       user,
-      symbol: ''
+      symbol: 'x'
     }).save()
 
     const game = await Game.findOneById(entity.id)
@@ -54,14 +52,16 @@ export default class GameController {
   @HttpCode(201)
   async joinGame(
     @CurrentUser() user: User,
-    @Param('id') gameId: number
+    @Param('id') gameId: number,
+    @Body() body: Object
   ) {
     const game = await Game.findOneById(gameId)
+    const symbol = Object.keys(body)[0]
 
     if (game) game.board = createNewBoard(game.currentLevel)
-
+    
     let enemyCount = 0
-
+    
     if (game) {
       game.board.map(
         (row) => row.map((cell) => {
@@ -73,9 +73,11 @@ export default class GameController {
         })
       )
     }
+    
     if (!game) throw new BadRequestError(`Game does not exist`)
+    
     if (game.status !== 'pending') throw new BadRequestError(`Game is already started`)
-
+    
     game.status = 'started'
     game.enemyCount = enemyCount
     await game.save()
@@ -83,7 +85,7 @@ export default class GameController {
     const player = await Player.create({
       game,
       user,
-      symbol: ''
+      symbol: symbol
     }).save()
 
     io.emit('action', {
