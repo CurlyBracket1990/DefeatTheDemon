@@ -60,7 +60,7 @@ export default class GameController {
     if (game) {
       game.board.map(
         (row) => row.map((cell) => {
-          if (cell === ">") {
+          if (cell===">" || cell==="<" || cell==="^" || cell==="v") {
             enemyCount = enemyCount + 1
             return null
           }
@@ -137,7 +137,6 @@ export default class GameController {
       game.status = 'Level completed!'
     }
     else if (game.totalMoves < 1) {
-      game.defeatedTheDemon = false
       game.status = 'Game over!'
     }
     else {

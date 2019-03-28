@@ -120,7 +120,6 @@ class GameDetails extends PureComponent {
 
       <hr />
 
-
       {
         <PlayerManual />
       }
@@ -132,6 +131,7 @@ class GameDetails extends PureComponent {
         }
         </div>
           {
+             game.status === 'started' &&
             <GameInformation game = {game}/>
           }
       </div>

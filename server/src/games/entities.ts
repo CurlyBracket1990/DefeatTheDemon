@@ -85,6 +85,9 @@ export class Game extends BaseEntity {
   @Column('integer', {nullable: true})
   enemyCount: number
 
+  @Column('integer', {default: 1})
+  currentLevel: number
+
   @Column('boolean', {nullable: true, default: false})
   defeatedTheDemon: boolean
 

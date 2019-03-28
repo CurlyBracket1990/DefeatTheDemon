@@ -17,8 +17,9 @@ export default class PlayerManual extends PureComponent {
             
             <li>1. You can't attack your teammate. (duh)</li>
             <li>2. You can only defeat enemys that are not facing towards you.</li>
-            <li>3. If you try to attack an enemy that is facing towards you, you lose your turn and the total moves will go down</li>
-            <li>4. You can't move diagonaly.</li>
+            <li>3. If you try to attack an enemy that is facing towards you, you lose your turn and the total moves will go down.</li>
+            <li>4. You can only move 1 tile per turn.</li>
+            <li>5. You can't move diagonaly.</li>
         </ul>
         </div>
     }
