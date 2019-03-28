@@ -13,7 +13,7 @@ export class Champion {
     damage: 3
   }
   damage = 1 + this.weapon.damage + this.levelChampion
-  symbol = ""
+  symbol = ''
  }
 
 export class Enemy {

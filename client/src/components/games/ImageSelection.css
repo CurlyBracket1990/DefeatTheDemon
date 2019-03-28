@@ -1,0 +1,9 @@
+.champ-images{
+    display: flex;
+    flex-wrap: wrap;
+    
+}
+.champ-images img{
+    margin: 10px;
+    
+}

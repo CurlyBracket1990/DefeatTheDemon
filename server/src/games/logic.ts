@@ -128,7 +128,7 @@ export const startNewLevel = (game, player) => {
 }
 
 export const tryToAttackPlayer = (newPosSymbol) => {
-  if (["x","y","z","n","m"].includes(newPosSymbol)) {
+  if (["x","y","z","n","m","s","g"].includes(newPosSymbol)) {
     return true
   }
   return false

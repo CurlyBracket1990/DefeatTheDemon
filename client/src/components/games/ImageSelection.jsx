@@ -1,8 +1,13 @@
 import React, { PureComponent } from 'react'
+import './ImageSelection.css'
 
-import demonFrontImage from '../../images/enemies/demonFront.png'
 import necroImage from '../../images/champions/necro.png'
 import monkImage from '../../images/champions/monk.png'
+import skeletonImage from '../../images/champions/skeleton.png'
+import marksmanImage from '../../images/champions/marksman.png'
+import mageImage from '../../images/champions/mage.png'
+import guardImage from '../../images/champions/guard.png'
+import knightImage from '../../images/champions/knight.png'
 
 
 export default class ImageSelection extends PureComponent {
@@ -23,15 +28,39 @@ export default class ImageSelection extends PureComponent {
                     })
                     break;
                 case 'monk':
-                    player.symbol = "m"
+                    player.symbol = "x"
                     this.setState({
                         hero: "monk"
                     })
                     break;
-                case 'demonF':
+                case 'marksman':
                     player.symbol = "z"
                     this.setState({
-                        hero: "demon"
+                        hero: "marksman"
+                    })
+                    break;
+                case 'guard':
+                    player.symbol = "g"
+                    this.setState({
+                        hero: "guard"
+                    })
+                    break;
+                case 'knight':
+                    player.symbol = "y"
+                    this.setState({
+                        hero: "knight"
+                    })
+                    break;
+                case 'mage':
+                    player.symbol = "m"
+                    this.setState({
+                        hero: "mage"
+                    })
+                    break;
+                case 'skeleton':
+                    player.symbol = "s"
+                    this.setState({
+                        hero: "skeleton"
                     })
                     break;
                 default:
@@ -50,15 +79,38 @@ export default class ImageSelection extends PureComponent {
                 case 'monk':
                     this.setState({
                         hero: "monk",
-                        selectedSymbol: "m"
+                        selectedSymbol: "x"
                     })
                     break;
                 case 'demonF':
                     this.setState({
-                        hero: "demon",
+                        hero: "marskman",
                         selectedSymbol: "z"
                     })
                     break;
+                case 'guard':
+                    this.setState({
+                        hero: "guard",
+                        selectedSymbol: "g"
+                    })
+                    break;
+                case 'knight':
+                    this.setState({
+                        hero: "knight",
+                        selectedSymbol: "y"
+                    })
+                    break;
+                case 'mage':
+                    this.setState({
+                        hero: "mage",
+                        selectedSymbol: "m"
+                    })
+                    break;
+                case 'skeleton':
+                    this.setState({
+                        hero: "skeleton",
+                        selectedSymbol: "s"
+                    })
                 default:
                     break;
             }
@@ -71,7 +123,7 @@ export default class ImageSelection extends PureComponent {
     }
 
     handleJoinClick = () => {
-        if(!this.state.selectedSymbol){
+        if (!this.state.selectedSymbol) {
             alert("please select a hero")
             return null
         }
@@ -79,14 +131,18 @@ export default class ImageSelection extends PureComponent {
     }
 
     render() {
-        const {game, userId} = this.props
+        const { game, userId } = this.props
         return (
             <div className="image-selection">
-                <ul>
-                    <li>{<img src={necroImage} alt='necro' onClick={this.clickhandler} />}</li>
-                    <li>{<img src={monkImage} alt='monk' onClick={this.clickhandler} />}</li>
-                    <li>{<img src={demonFrontImage} alt='demonF' onClick={this.clickhandler} />}</li>
-                </ul>
+                <div className="champ-images">
+                    {<img src={necroImage} alt='necro' onClick={this.clickhandler} />}
+                    {<img src={monkImage} alt='monk' onClick={this.clickhandler} />}
+                    {<img src={marksmanImage} alt='marksman' onClick={this.clickhandler} />}
+                    {<img src={guardImage} alt='guard' onClick={this.clickhandler} />}
+                    {<img src={knightImage} alt='knight' onClick={this.clickhandler} />}
+                    {<img src={mageImage} alt='mage' onClick={this.clickhandler} />}
+                    {<img src={skeletonImage} alt='skeleton' onClick={this.clickhandler} />}
+                </div>
                 {this.state.hero.length > 1 && <p>You've selected the {this.state.hero} hero.</p>}
 
                 {
