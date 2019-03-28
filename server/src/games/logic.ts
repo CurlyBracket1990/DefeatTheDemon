@@ -65,7 +65,8 @@ export const createNewBoard = (level): Board => {
   return [createRandomRow(level) as Row, createRandomRow(level) as Row, createRandomRow(level) as Row, createRandomRow(level) as Row, createStartRow() as Row]
 }
 
-export const isValidTransition = (from: Board, to: Board, playerPos: number[], newPlayerPos: number[]) => {
+
+export const isValidTransition = ( from: Board, to: Board, playerPos: number[], newPlayerPos: number[]) => {
   const changes = from
     .map(
       (row, rowIndex) => row.map((symbol, columnIndex) => ({
@@ -127,7 +128,7 @@ export const startNewLevel = (game, player) => {
 }
 
 export const tryToAttackPlayer = (newPosSymbol) => {
-  if (newPosSymbol === "x" || newPosSymbol === "y") {
+  if (["x","y","z","n","m"].includes(newPosSymbol)) {
     return true
   }
   return false

@@ -1,6 +1,6 @@
-# Tic Tac Toe Server
+# Demon Hunt Server
 
-This is a server for playing a multiplayer Tic Tac Toe game. 
+This is a server for playing a multiplayer Demon Hunt game. 
 
 It has these endpoints:
 
