@@ -31,7 +31,7 @@ export const updateEnemyCount = (board: Board) => {
   
 // }
 
-export const isValidTransition = (playerSymbol: Champion["symbol"], from: Board, to: Board, playerPos: number[], newPlayerPos: number[], newPosSymbol: string) => {
+export const isValidTransition = ( from: Board, to: Board, playerPos: number[], newPlayerPos: number[]) => {
   const changes = from
     .map(
       (row, rowIndex) => row.map((symbol, columnIndex) => ({
@@ -81,7 +81,7 @@ export const battleWinner = (playerPos, newPlayerPos, newPosSymbol) => {
 }
 
 export const tryToAttackPlayer = (newPosSymbol) => {
-  if (newPosSymbol === "x" || newPosSymbol === "y") {
+  if (["x","y","z","n","m"].includes(newPosSymbol)) {
     return true
   }
   return false
