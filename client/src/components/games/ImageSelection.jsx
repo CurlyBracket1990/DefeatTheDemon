@@ -19,7 +19,7 @@ export default class ImageSelection extends PureComponent {
 
     imageSelecter = (image) => {
         const { player } = this.props
-        console.log(player.symbol)
+        console.log(player)
         if (player) {
             switch (image) {
                 case 'necro':

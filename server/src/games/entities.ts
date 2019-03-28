@@ -25,7 +25,7 @@ export class Enemy {
   }
 }
 
-export type Content = "x" | "y" | null | "<" | "v" | "^" | ">"
+export type Content = "x" | "y" | null | "<" | "v" | "^" | ">" | "n" | "m" | "g" | "s" | "z"
 export type Row = [Content, Content, Content, Content, Content, Content ]
 export type Board = [ Row, Row, Row, Row, Row ]
 

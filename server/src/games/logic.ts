@@ -5,7 +5,7 @@ import { Board, Row } from './entities'
 export class IsBoard implements ValidatorConstraintInterface {
 
   validate(board: Board) {
-    const datas = ["x", "y", null, "<", "v", "^", ">"]
+    const datas = ["x", "y", null, "<", "v", "^", ">", "m", "n", "g", "z", "s"]
     return board.length === 5 &&
       board.every((row: Row) =>
         row.length === 6 &&
@@ -76,8 +76,7 @@ export const isValidTransition = ( from: Board, to: Board, playerPos: number[], 
     )
     .reduce((a, b) => a.concat(b))
     .filter(change => change.from !== change.to)
-
-  return changes.length < 3
+  return changes.length < 10
     && ((playerPos[0] - 1 === newPlayerPos[0] && playerPos[1] === newPlayerPos[1])
       || (playerPos[0] + 1 === newPlayerPos[0] && playerPos[1] === newPlayerPos[1])
       || (playerPos[0] === newPlayerPos[0] && playerPos[1] - 1 === newPlayerPos[1])
@@ -115,11 +114,10 @@ export const battleWinner = (playerPos, newPlayerPos, newPosSymbol) => {
   }
 }
 
-export const startNewLevel = (game, player) => {
+export const startNewLevel = (game) => {
   if (game.status === 'Level completed!') {
     game.status = "started"
     game.currentLevel = game.currentLevel + 1
-    game.turn = player.symbol === 'x' ? 'y' : 'x'
     game.board = createNewBoard(game.currentLevel)
     game.enemyCount = updateEnemyCount(game.board)
     game.totalMoves = (game.enemyCount * 2) + 5
@@ -128,7 +126,7 @@ export const startNewLevel = (game, player) => {
 }
 
 export const tryToAttackPlayer = (newPosSymbol) => {
-  if (["x","y","z","n","m"].includes(newPosSymbol)) {
+  if (["x","y","z","n","m", "g", "s"].includes(newPosSymbol)) {
     return true
   }
   return false

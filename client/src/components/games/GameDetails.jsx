@@ -54,7 +54,6 @@ makeMove = (toRow, toCell) => {
   let playerPos = []
   let newPlayerPos = []
   let newPosSymbol = ""
-
   game.board.map(
     (row, rowIndex) => row.map((cell, cellIndex) => {
       if (rowIndex === toRow && cellIndex === toCell) {

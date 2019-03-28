@@ -99,9 +99,19 @@ export default class GameController {
   }
 
   @Authorized()
-  // the reason that we're using patch here is because this request is not idempotent
-  // http://restcookbook.com/HTTP%20Methods/idempotency/
-  // try to fire the same requests twice, see what happens
+  @Patch('/games/:id([0-9]+)/update')
+  async updatePlayerSymbol(
+    @CurrentUser() user: User,
+    @Body() body: Object
+  ){
+    const player = await Player.findOne({ user })
+    if(player) {
+      player.symbol =  Object.keys(body)[0]
+      player.save()
+    }
+  }
+
+  @Authorized()
   @Patch('/games/:id([0-9]+)')
   async updateGame(
     @CurrentUser() user: User,
@@ -116,7 +126,6 @@ export default class GameController {
       playerSymbol1 = game.players[0].symbol
       playerSymbol2 = game.players[1].symbol
     }
-
     if (!game) throw new NotFoundError(`Game does not exist`)
 
     const player = await Player.findOne({ user, game })
@@ -159,7 +168,7 @@ export default class GameController {
     if (winner) {
       game.defeatedTheDemon = true
       game.status = 'Level completed!'
-      startNewLevel(game, player)
+      startNewLevel(game)
       await game.save()
 
       io.emit('action', {

@@ -76,14 +76,10 @@ export const updateGame = (gameId, board, playerPos, newPlayerPos, newPosSymbol)
   const jwt = state.currentUser.jwt
 
   if (isExpired(jwt)) return dispatch(logout())
-
   request
     .patch(`${baseUrl}/games/${gameId}`)
     .set('Authorization', `Bearer ${jwt}`)
     .send({ board, playerPos, newPlayerPos, newPosSymbol })
-    .then(_ => { 
-      dispatch(updateGameSuccess())
-    }
-      )
+    .then(_ => dispatch(updateGameSuccess()))
     .catch(err => console.error(err))
 }
