@@ -58,7 +58,7 @@ export default class GameController {
     @Body() body: Object
   ) {
     const game = await Game.findOneById(gameId)
-    const blabla = Object.keys(body)[0]
+    const symbol = Object.keys(body)[0]
 
     if (game) game.board = createNewBoard(game.currentLevel)
     
@@ -87,7 +87,7 @@ export default class GameController {
     const player = await Player.create({
       game,
       user,
-      symbol: blabla
+      symbol: symbol
     }).save()
 
     io.emit('action', {
