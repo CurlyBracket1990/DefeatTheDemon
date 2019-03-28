@@ -19,6 +19,7 @@ export default class ImageSelection extends PureComponent {
 
     imageSelecter = (image) => {
         const { player } = this.props
+        console.log(player.symbol)
         if (player) {
             switch (image) {
                 case 'necro':
@@ -82,9 +83,9 @@ export default class ImageSelection extends PureComponent {
                         selectedSymbol: "x"
                     })
                     break;
-                case 'demonF':
+                case 'marksman':
                     this.setState({
-                        hero: "marskman",
+                        hero: "marksman",
                         selectedSymbol: "z"
                     })
                     break;
@@ -111,6 +112,7 @@ export default class ImageSelection extends PureComponent {
                         hero: "skeleton",
                         selectedSymbol: "s"
                     })
+                    break;
                 default:
                     break;
             }
