@@ -38,7 +38,7 @@ export default class GameController {
     await Player.create({
       game: entity,
       user,
-      symbol: 'x'
+      symbol: ''
     }).save()
 
     const game = await Game.findOneById(entity.id)
@@ -83,7 +83,7 @@ export default class GameController {
     const player = await Player.create({
       game,
       user,
-      symbol: 'y'
+      symbol: ''
     }).save()
 
     io.emit('action', {
