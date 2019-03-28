@@ -60,7 +60,7 @@ io.use(socketIoJwtAuth.authenticate({ secret }, async (payload, done) => {
 }))
 
 io.on('connect', socket => {
-  const name = socket.request.user.firstName
+  const name = socket.request.user.email
   console.log(`User ${name} just connected`)
 
   socket.on('disconnect', () => {
@@ -73,4 +73,6 @@ setupDb()
     server.listen(port)
     console.log(`Listening on port ${port}`)
   })
-  .catch(err => console.error(err))
+  .catch(err => {
+    console.error(err)
+  })

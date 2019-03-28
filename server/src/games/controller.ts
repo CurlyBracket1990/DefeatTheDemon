@@ -4,9 +4,10 @@ import {
 } from 'routing-controllers'
 import User from '../users/entity'
 import { Game, Player, Board } from './entities'
-import { IsBoard, isValidTransition, calculateWinner, tryToAttackPlayer, updateEnemyCount, battleWinner } from './logic'
+import { IsBoard, isValidTransition, calculateWinner, tryToAttackPlayer, updateEnemyCount, battleWinner, createNewBoard, startNewLevel } from './logic'
 import { Validate } from 'class-validator'
 import { io } from '../index'
+// import { AdvancedConsoleLogger } from 'typeorm';
 // import { Entity } from 'typeorm';
 
 class GameUpdate {
@@ -56,11 +57,15 @@ export default class GameController {
     @Param('id') gameId: number
   ) {
     const game = await Game.findOneById(gameId)
+
+    if (game) game.board = createNewBoard(game.currentLevel)
+
     let enemyCount = 0
+
     if (game) {
       game.board.map(
         (row) => row.map((cell) => {
-          if (cell===">" || cell==="<" || cell==="^" || cell==="v") {
+          if (cell === ">" || cell === "<" || cell === "^" || cell === "v") {
             enemyCount = enemyCount + 1
             return null
           }
@@ -99,24 +104,39 @@ export default class GameController {
     @Param('id') gameId: number,
     @Body() update: GameUpdate
   ) {
-    console.log(update.board, "BOARDDD")
     const game = await Game.findOneById(gameId)
+    let playerSymbol1 = ''
+    let playerSymbol2 = ''
+
+    if (game) {
+      playerSymbol1 = game.players[0].symbol
+      playerSymbol2 = game.players[1].symbol
+    }
+
     if (!game) throw new NotFoundError(`Game does not exist`)
 
     const player = await Player.findOne({ user, game })
+
     if (!player) throw new ForbiddenError(`You are not part of this game`)
-    if (game.status !== 'started') throw new BadRequestError(`The game is not started yet`)
+
+    if (game.status === 'pending') throw new BadRequestError(`The game is not started yet`)
+
+
+    if (game.status === 'Game over!') throw new BadRequestError(`The game has ended`)
+
     if (player.symbol !== game.turn) throw new BadRequestError(`It's not your turn`)
-    if (!isValidTransition(player.symbol, game.board, update.board, update.playerPos, update.newPlayerPos, update.newPosSymbol)) {
+
+    if (!isValidTransition(game.board, update.board, update.playerPos, update.newPlayerPos)) {
       throw new BadRequestError(`You can only move up, down, left and right.`)
     }
+
     if (tryToAttackPlayer(update.newPosSymbol)) {
-      console.log("I don't think your teammate will like that..")
       throw new BadRequestError(`I don't think your teammate will like that..`)
     }
+
     if (!battleWinner(update.playerPos, update.newPlayerPos, update.newPosSymbol)) {
       game.totalMoves = game.totalMoves - 1
-      game.turn = player.symbol === 'x' ? 'y' : 'x'
+      game.turn = player.symbol === playerSymbol1 ? playerSymbol2 : playerSymbol1
       await game.save()
 
       io.emit('action', {
@@ -135,12 +155,22 @@ export default class GameController {
     if (winner) {
       game.defeatedTheDemon = true
       game.status = 'Level completed!'
+      startNewLevel(game, player)
+      await game.save()
+
+      io.emit('action', {
+        type: 'UPDATE_GAME',
+        payload: game
+      })
+
+      return game
+
     }
     else if (game.totalMoves < 1) {
       game.status = 'Game over!'
     }
     else {
-      game.turn = player.symbol === 'x' ? 'y' : 'x'
+      game.turn = player.symbol === playerSymbol1 ? playerSymbol2 : playerSymbol1
     }
     game.board = update.board
     await game.save()
