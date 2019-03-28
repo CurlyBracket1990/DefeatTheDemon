@@ -42,15 +42,15 @@ export const getGames = () => (dispatch, getState) => {
     .catch(err => console.error(err))
 }
 
-export const joinGame = (gameId) => (dispatch, getState) => {
+export const joinGame = (gameId, symbol) => (dispatch, getState) => {
   const state = getState()
   const jwt = state.currentUser.jwt
 
   if (isExpired(jwt)) return dispatch(logout())
-
   request
     .post(`${baseUrl}/games/${gameId}/players`)
     .set('Authorization', `Bearer ${jwt}`)
+    .send(symbol)
     .then(_ => dispatch(joinGameSuccess()))
     .catch(err => console.error(err))
 }

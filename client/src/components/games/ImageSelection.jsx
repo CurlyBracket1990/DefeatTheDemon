@@ -1,69 +1,102 @@
 import React, { PureComponent } from 'react'
 
-import demonLeftImage from '../../images/enemies/demonLeft.png'
-import demonRightImage from '../../images/enemies/demonRight.png'
 import demonFrontImage from '../../images/enemies/demonFront.png'
-import demonBackImage from '../../images/enemies/demonBack.png'
 import necroImage from '../../images/champions/necro.png'
 import monkImage from '../../images/champions/monk.png'
-import terrainImage from '../../images/terrains/terrain1.png'
 
 
 export default class ImageSelection extends PureComponent {
 
-// enemyImage = (symbol) => {
-//     if (symbol === "<") {
-//       return <img src={demonLeftImage} alt="<" />
-//     } else if (symbol === ">") {
-//       return <img src={demonRightImage} alt=">" />
-//     } else if (symbol === "^") {
-//       return <img src={demonBackImage} alt="^" />
-//     } else if (symbol === "v") {
-//       return <img src={demonFrontImage} alt="v" />
-//     } else if (symbol === "y") {
-//       return <img src={necroImage} alt="y" />
-//     } else if (symbol === "x") {
-//       return <img src={monkImage} alt="x" />
-//     }
-//     else return <img src={terrainImage} alt="-" />
-//   }
-
-imageSelecter = (image) => {
-    const { player } = this.props
-    console.log(player, "PLAYer")
-    if(image === 'necro') {
-        player.symbol = "z"
+    state = {
+        hero: "",
+        selectedSymbol: ""
     }
-    switch (image) {
-        case 'necro':
-            player.symbol = "n"
-            break;
-        case 'monk':
-            player.symbol = "m"
-            break;
-        case 'demonF':
-            player.symbol = "z"
-            break;
-        default:
-            break;
-    }
-}
 
-clickhandler = (event) => {
-    this.imageSelecter(event.target.alt)
-}
+    imageSelecter = (image) => {
+        const { player } = this.props
+        if (player) {
+            switch (image) {
+                case 'necro':
+                    player.symbol = "n"
+                    this.setState({
+                        hero: "necro"
+                    })
+                    break;
+                case 'monk':
+                    player.symbol = "m"
+                    this.setState({
+                        hero: "monk"
+                    })
+                    break;
+                case 'demonF':
+                    player.symbol = "z"
+                    this.setState({
+                        hero: "demon"
+                    })
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        else {
+            switch (image) {
+                case 'necro':
+                    this.setState({
+                        hero: "necro",
+                        selectedSymbol: "n"
+                    })
+                    break;
+                case 'monk':
+                    this.setState({
+                        hero: "monk",
+                        selectedSymbol: "m"
+                    })
+                    break;
+                case 'demonF':
+                    this.setState({
+                        hero: "demon",
+                        selectedSymbol: "z"
+                    })
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    }
+
+    clickhandler = (event) => {
+        this.imageSelecter(event.target.alt)
+    }
+
+    handleJoinClick = () => {
+        if(!this.state.selectedSymbol){
+            alert("please select a hero")
+            return null
+        }
+        this.props.joinGame(this.state.selectedSymbol)
+    }
 
     render() {
-        const {player} = this.props
-        console.log(player, "PLAYER222")
+        const {game, userId} = this.props
         return (
             <div className="image-selection">
                 <ul>
-                    <li>{<img src= {necroImage} alt='necro' onClick={this.clickhandler} />}</li>
-                    <li>{<img src= {monkImage} alt='monk'onClick={this.clickhandler}/>}</li>
-                    <li>{<img src= {demonFrontImage} alt='demonF'onClick={this.clickhandler}/>}</li>
+                    <li>{<img src={necroImage} alt='necro' onClick={this.clickhandler} />}</li>
+                    <li>{<img src={monkImage} alt='monk' onClick={this.clickhandler} />}</li>
+                    <li>{<img src={demonFrontImage} alt='demonF' onClick={this.clickhandler} />}</li>
                 </ul>
+                {this.state.hero.length > 1 && <p>You've selected the {this.state.hero} hero.</p>}
+
+                {
+                    game.status === 'pending' &&
+                    game.players.map(p => p.userId).indexOf(userId) === -1 &&
+                    <button onClick={this.handleJoinClick}>Join Game</button>
+                }
             </div>
+
+
         )
     }
 
