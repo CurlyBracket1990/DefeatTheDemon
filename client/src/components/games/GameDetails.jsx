@@ -14,6 +14,8 @@ import demonBackImage from '../../images/enemies/demonBack.png'
 import necroImage from '../../images/champions/necro.png'
 import monkImage from '../../images/champions/monk.png'
 import terrainImage from '../../images/terrains/terrain1.png'
+import PlayerManual from './PlayerManual'
+import GameInformation from './GameInformation'
 
 class GameDetails extends PureComponent {
   componentWillMount() {
@@ -26,21 +28,21 @@ class GameDetails extends PureComponent {
   joinGame = () => this.props.joinGame(this.props.game.id)
 
 
-  enemyImage = (symbol) =>  {
+  enemyImage = (symbol) => {
     if (symbol === "<") {
-      return <img src = {demonLeftImage} alt="<"/>
+      return <img src={demonLeftImage} alt="<" />
     } else if (symbol === ">") {
-      return <img src = {demonRightImage} alt=">"/>
+      return <img src={demonRightImage} alt=">" />
     } else if (symbol === "^") {
-      return <img src = {demonBackImage} alt="^"/>
+      return <img src={demonBackImage} alt="^" />
     } else if (symbol === "v") {
-      return <img src = {demonFrontImage} alt="v"/>
-    }else if (symbol === "y") {
-      return <img src = {necroImage} alt="y"/>
-    }else if (symbol === "x") {
-      return <img src = {monkImage} alt="x"/>
+      return <img src={demonFrontImage} alt="v" />
+    } else if (symbol === "y") {
+      return <img src={necroImage} alt="y" />
+    } else if (symbol === "x") {
+      return <img src={monkImage} alt="x" />
     }
-    else return <img src = {terrainImage} alt="-"/>
+    else return <img src={terrainImage} alt="-" />
   }
 
   makeMove = (toRow, toCell) => {
@@ -118,10 +120,21 @@ class GameDetails extends PureComponent {
 
       <hr />
 
+
       {
-        game.status !== 'pending' &&
-        <Board board={game.board} makeMove={this.makeMove} enemyImage={this.enemyImage}/>
+        <PlayerManual />
       }
+      <div className="container">
+      <div>
+        {
+          game.status !== 'pending' &&
+          <Board board={game.board} makeMove={this.makeMove} enemyImage={this.enemyImage} />
+        }
+        </div>
+          {
+            <GameInformation game = {game}/>
+          }
+      </div>
     </Paper>)
   }
 }
@@ -138,26 +151,3 @@ const mapDispatchToProps = {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameDetails)
-
-
-
-  // renderEnemies = () => {
-  //   const playerPos = [0, 0]
-  //   const newPlayerPos = [0, 0]
-  //   const { game, updateGame } = this.props
-  //   let enemyCount = 0
-  //   const board = game.board.map(
-  //     (row) => row.map((cell) => {
-  //       if (cell !== "x" || cell !== "y" || enemyCount > 2) {
-  //         const randomNum = Math.floor(Math.random() * 11)
-  //         if(randomNum < 1) {
-  //           enemyCount++
-  //         return "V"
-  //         }
-  //         return cell
-  //       }
-  //       else return cell
-  //     })
-  //   )
-  //   updateGame(game.id, board, playerPos, newPlayerPos)
-  // }

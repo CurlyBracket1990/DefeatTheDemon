@@ -7,16 +7,16 @@ export class IsBoard implements ValidatorConstraintInterface {
   validate(board: Board) {
     const datas = ["x", "y", null, "<", "v", "^", ">"]
     return board.length === 5 &&
-      board.every(row =>
+      board.every((row: Row) =>
         row.length === 6 &&
         row.every(tile => datas.includes(tile))
       )
   }
 }
 
-export const updateEnemyCount = (board) => {
+export const updateEnemyCount = (board: Board) => {
   let enemyCount = 0
-  board.map((row) => {
+  board.map((row: Row) => {
     row.map((cell) => {
       if(cell === "v" || cell === ">" || cell === "^" || cell === "<"){
         enemyCount = enemyCount +1
@@ -26,6 +26,10 @@ export const updateEnemyCount = (board) => {
   })
   return enemyCount
 }
+
+// export const updateMoveCount = (game) => {
+  
+// }
 
 export const isValidTransition = (playerSymbol: Champion["symbol"], from: Board, to: Board, playerPos: number[], newPlayerPos: number[], newPosSymbol: string) => {
   const changes = from
@@ -43,7 +47,6 @@ export const isValidTransition = (playerSymbol: Champion["symbol"], from: Board,
       || (playerPos[0] + 1 === newPlayerPos[0] && playerPos[1] === newPlayerPos[1])
       || (playerPos[0] === newPlayerPos[0] && playerPos[1] - 1 === newPlayerPos[1])
       || (playerPos[0] === newPlayerPos[0] && playerPos[1] + 1 === newPlayerPos[1]))
-    && battleWinner(playerPos, newPlayerPos, newPosSymbol)
 }
 
 export const battleWinner = (playerPos, newPlayerPos, newPosSymbol) => {
@@ -71,13 +74,17 @@ export const battleWinner = (playerPos, newPlayerPos, newPosSymbol) => {
     }
     return true
   }
-  else if (newPosSymbol === "x" || newPosSymbol === "y") {
-      return false
-  }
   
   else {
     return true
   }
+}
+
+export const tryToAttackPlayer = (newPosSymbol) => {
+  if (newPosSymbol === "x" || newPosSymbol === "y") {
+    return true
+  }
+  return false
 }
 
 export const calculateWinner = (enemyCount: number) => {

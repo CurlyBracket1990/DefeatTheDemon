@@ -29,7 +29,7 @@ export type Content = "x" | "y" | null | "<" | "v" | "^" | ">"
 export type Row = [Content, Content, Content, Content, Content, Content ]
 export type Board = [ Row, Row, Row, Row, Row ]
 
-type Status = 'pending' | 'started' | 'Level completed!'
+type Status = 'pending' | 'started' | 'Level completed!' | 'Game over!'
 
 let enemyCount = 0
 
@@ -79,8 +79,8 @@ export class Game extends BaseEntity {
   @Column('char', { default: 'x'})
   turn: Champion["symbol"]
 
-  @Column('text', {nullable: true})
-  enemy: Enemy
+  @Column('integer', {default: 15})
+  totalMoves: number
 
   @Column('integer', {nullable: true})
   enemyCount: number
