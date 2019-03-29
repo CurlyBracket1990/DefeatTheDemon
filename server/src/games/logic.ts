@@ -122,7 +122,7 @@ export const startNewLevel = (game) => {
     game.currentLevel = game.currentLevel + 1
     game.board = createNewBoard(game.currentLevel, symbolPlayer1, symbolPlayer2)
     game.enemyCount = updateEnemyCount(game.board)
-    game.totalMoves = (game.enemyCount * 2) + 5
+    game.totalMoves = (game.enemyCount * 2) + 6
     return game
   }
 }

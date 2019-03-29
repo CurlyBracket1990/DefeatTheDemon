@@ -127,34 +127,34 @@ export default class GameController {
     const game = await Game.findOneById(gameId)
     let playerSymbol1 = ''
     let playerSymbol2 = ''
-    console.log("1")
+    
 
     if (game) {
       playerSymbol1 = game.players[0].symbol
       playerSymbol2 = game.players[1].symbol
     }
-    console.log("2")
+    
     if (!game) throw new NotFoundError(`Game does not exist`)
-    console.log("3")
+    
     const player = await Player.findOne({ user, game })
 
     if (!player) throw new ForbiddenError(`You are not part of this game`)
-    console.log("4")
+    
     if (game.status === 'pending') throw new BadRequestError(`The game is not started yet`)
-    console.log("5")
+    
 
     if (game.status === 'Game over!') throw new BadRequestError(`The game has ended`)
-    console.log("6")
+    
     if (player.symbol !== game.turn) throw new BadRequestError(`It's not your turn`)
-    console.log("7")
+    
     if (!isValidTransition(game.board, update.board, update.playerPos, update.newPlayerPos)) {
       throw new BadRequestError(`You can only move up, down, left and right.`)
     }
-    console.log("8")
+    
     if (tryToAttackPlayer(update.newPosSymbol)) {
       throw new BadRequestError(`I don't think your teammate will like that..`)
     }
-    console.log("9")
+    
     if (!battleWinner(update.playerPos, update.newPlayerPos, update.newPosSymbol)) {
   
       game.totalMoves = game.totalMoves - 1

@@ -8,6 +8,7 @@ It has these endpoints:
 * `POST /logins`: log in and receive a JWT
 * `POST /games`: create a new game
 * `POST /games/:id/players`: join an existing game
+* `PATCH /games/:id/updatePlayerSymbol`: changes players symbol to selected champion
 * `PATCH /games/:id`: update an existing game
 * `GET /games`: list all games
 * `GET /users`: list all users

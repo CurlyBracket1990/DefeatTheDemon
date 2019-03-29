@@ -2,9 +2,17 @@
 
 This repo contains a frontend and backend for a multiplayer tic tac toe game. It uses Typescript, Koa, routing-controllers and TypeORM in the backend and React/Redux in the frontend. The backend exposes a REST API but also sends messages over websockets using SocketIO. 
 
-![example](https://cd.sseu.re/tictactoe-low.gif)
-
 ## Getting Started
+
+If the server is already running, you can try:
+
+try to this link to open and login the game.
+http://172.16.31.195:3000/login
+
+If you do not have account yet, try this link to register our lovely game.
+http://172.16.31.195:3000/signup
+
+Otherwise rewrite the baseurl ip part to localhost.
 
 ### Postgres Database
 
