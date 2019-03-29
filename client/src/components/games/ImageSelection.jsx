@@ -18,8 +18,8 @@ export default class ImageSelection extends PureComponent {
     }
 
     imageSelecter = (image) => {
-        const { player } = this.props
-        console.log(player)
+        const player = this.props.game.players.find(p => p.userId === this.props.userId)
+        const {updatePlayerSymbol, game} = this.props
         if (player) {
             switch (image) {
                 case 'necro':
@@ -27,42 +27,49 @@ export default class ImageSelection extends PureComponent {
                     this.setState({
                         hero: "necro"
                     })
+                    updatePlayerSymbol(game.id, player)
                     break;
                 case 'monk':
                     player.symbol = "x"
                     this.setState({
                         hero: "monk"
                     })
+                    updatePlayerSymbol(game.id, player)
                     break;
                 case 'marksman':
                     player.symbol = "z"
                     this.setState({
                         hero: "marksman"
                     })
+                    updatePlayerSymbol(game.id, player)
                     break;
                 case 'guard':
                     player.symbol = "g"
                     this.setState({
                         hero: "guard"
                     })
+                    updatePlayerSymbol(game.id, player)
                     break;
                 case 'knight':
                     player.symbol = "y"
                     this.setState({
                         hero: "knight"
                     })
+                    updatePlayerSymbol(game.id, player)
                     break;
                 case 'mage':
                     player.symbol = "m"
                     this.setState({
                         hero: "mage"
                     })
+                    updatePlayerSymbol(game.id, player)
                     break;
                 case 'skeleton':
                     player.symbol = "s"
                     this.setState({
                         hero: "skeleton"
                     })
+                    updatePlayerSymbol(game.id, player)
                     break;
                 default:
                     break;

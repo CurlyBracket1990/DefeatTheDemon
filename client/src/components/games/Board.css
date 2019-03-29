@@ -1,8 +1,12 @@
 .board-tile {
   height: 100px;
-  /* min-height: 50px; */
   width: 100px;
-  /* min-width: 50px; */
+  background-color: #C39753;
+  border: none;
+}
+
+button:focus {
+  outline:0;
 }
 
 img {

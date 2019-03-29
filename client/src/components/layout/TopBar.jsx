@@ -13,7 +13,7 @@ const TopBar = (props) => {
 
   return (
     <AppBar position="absolute" style={{zIndex:10}}>
-      <Toolbar>
+      <Toolbar style={{backgroundColor: "grey"}}>
         <Typography variant="title" color="inherit" style={{flex: 1}}>
           Multiplayer Demon Hunt
         </Typography>

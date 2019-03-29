@@ -20,7 +20,7 @@ class App extends Component {
           <nav>
             <TopBar />
           </nav>
-          <main style={{marginTop:75}}>
+          <main className="main" style={{marginTop:62}}>
             <Route exact path="/login" component={LoginPage} />
             <Route exact path="/logout" component={LogoutPage} />
             <Route exact path="/signup" component={SignupPage} />

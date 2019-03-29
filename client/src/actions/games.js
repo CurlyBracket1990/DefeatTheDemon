@@ -8,6 +8,7 @@ export const UPDATE_GAME = 'UPDATE_GAME'
 export const UPDATE_GAMES = 'UPDATE_GAMES'
 export const JOIN_GAME_SUCCESS = 'JOIN_GAME_SUCCESS'
 export const UPDATE_GAME_SUCCESS = 'UPDATE_GAME_SUCCESS'
+export const UPDATE_PLAYER_SYMBOL_SUCCES = 'UPDATE_PLAYER_SYMBOL_SUCCES'
 
 const updateGames = games => ({
   type: UPDATE_GAMES,
@@ -27,6 +28,9 @@ const joinGameSuccess = () => ({
   type: JOIN_GAME_SUCCESS
 })
 
+const updatePlayerSymbolSucces = () => ({
+  type: UPDATE_PLAYER_SYMBOL_SUCCES
+})
 
 export const getGames = () => (dispatch, getState) => {
   const state = getState()
@@ -81,5 +85,21 @@ export const updateGame = (gameId, board, playerPos, newPlayerPos, newPosSymbol)
     .set('Authorization', `Bearer ${jwt}`)
     .send({ board, playerPos, newPlayerPos, newPosSymbol })
     .then(_ => dispatch(updateGameSuccess()))
+    .catch(err => console.error(err))
+}
+
+export const updatePlayerSymbol = (gameId, player) => (dispatch, getState) => {
+  console.log(gameId, "gameId")
+  console.log(player, "player")
+  const state = getState()
+  const jwt = state.currentUser.jwt
+
+  if (isExpired(jwt)) return dispatch(logout())
+
+  request
+    .patch(`${baseUrl}/games/${gameId}/update`)
+    .set('Authorization', `Bearer ${jwt}`)
+    .send({ player })
+    .then(result => dispatch(updatePlayerSymbolSucces()))
     .catch(err => console.error(err))
 }

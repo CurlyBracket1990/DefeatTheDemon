@@ -6,7 +6,7 @@ import {Redirect} from 'react-router-dom'
 
 class SignupPage extends PureComponent {
 	handleSubmit = (data) => {
-		this.props.postSignup(data.email, data.password)
+		this.props.postSignup(data.nickname, data.password)
 	}
 
 	render() {

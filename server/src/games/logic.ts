@@ -56,13 +56,13 @@ const createRandomRow = (level) => {
   return [createRandomEnemy(level), createRandomEnemy(level), createRandomEnemy(level), createRandomEnemy(level), createRandomEnemy(level), createRandomEnemy(level)]
 }
 
-const createStartRow = () => {
-  return ["x", null, null, null, null, "y"]
+const createStartRow = (symbolPlayer1, symbolPlayer2) => {
+  return [symbolPlayer2, null, null, null, null, symbolPlayer1]
 }
 
-export const createNewBoard = (level): Board => {
+export const createNewBoard = (level, symbolPlayer1, symbolPlayer2): Board => {
   enemyCount = 0
-  return [createRandomRow(level) as Row, createRandomRow(level) as Row, createRandomRow(level) as Row, createRandomRow(level) as Row, createStartRow() as Row]
+  return [createRandomRow(level) as Row, createRandomRow(level) as Row, createRandomRow(level) as Row, createRandomRow(level) as Row, createStartRow(symbolPlayer1, symbolPlayer2) as Row]
 }
 
 
@@ -115,10 +115,12 @@ export const battleWinner = (playerPos, newPlayerPos, newPosSymbol) => {
 }
 
 export const startNewLevel = (game) => {
+  const symbolPlayer2 = game.players[0].symbol
+  const symbolPlayer1 = game.players[1].symbol
   if (game.status === 'Level completed!') {
     game.status = "started"
     game.currentLevel = game.currentLevel + 1
-    game.board = createNewBoard(game.currentLevel)
+    game.board = createNewBoard(game.currentLevel, symbolPlayer1, symbolPlayer2)
     game.enemyCount = updateEnemyCount(game.board)
     game.totalMoves = (game.enemyCount * 2) + 5
     return game

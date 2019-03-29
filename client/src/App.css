@@ -2,6 +2,11 @@
   text-align: center;
 }
 
+.main {
+  background-image: url('./images/terrains/lava');
+  height: 1000px;
+}
+
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
