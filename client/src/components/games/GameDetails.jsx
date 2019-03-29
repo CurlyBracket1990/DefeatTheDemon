@@ -22,6 +22,7 @@ import terrainImage from '../../images/terrains/terrain1.png'
 import PlayerManual from './PlayerManual'
 import GameInformation from './GameInformation'
 import ImageSelection from './ImageSelection';
+import Song from './Song';
 
 class GameDetails extends PureComponent {
   componentWillMount() {
@@ -132,6 +133,20 @@ class GameDetails extends PureComponent {
 
       <hr />
 
+
+    {
+      game.status !== 'pending' &&
+      <PlayerManual />
+    }
+    <div>{
+      game.status === 'pending' && <ImageSelection game = {game} userId = {userId} joinGame={this.joinGame} player={player} />  
+    }
+    <div>
+      {<Song game = {game.status}/>}
+    </div>
+    </div>
+    <div className="container">
+    <div>
       {
         game.status !== 'pending' &&
         <PlayerManual />
@@ -147,8 +162,10 @@ class GameDetails extends PureComponent {
           }
         </div>
         {
-          game.status === 'started' &&
-          <GameInformation game={game} />
+
+            game.status === 'started' &&
+          <GameInformation game = {game}/> 
+  
         }
       </div>
 
