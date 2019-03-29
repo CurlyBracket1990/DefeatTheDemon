@@ -46,7 +46,7 @@ export class Game extends BaseEntity {
   @Column('char', { default: 'x'})
   turn: Champion["symbol"]
 
-  @Column('integer', {default: 12})
+  @Column('integer', {default: 15})
   totalMoves: number
 
   @Column('integer', {nullable: true})

@@ -61,7 +61,6 @@ class GameDetails extends PureComponent {
     } else if (symbol === "s") {
       return <img src={skeletonImage} alt="s" />
     }
-
     else return <img src={terrainImage} alt="-" />
   }
 

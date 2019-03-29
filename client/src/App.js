@@ -16,7 +16,7 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div>
+        <div style={{height: "100%"}}>
           <nav>
             <TopBar />
           </nav>
