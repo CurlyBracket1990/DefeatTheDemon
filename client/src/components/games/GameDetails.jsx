@@ -133,20 +133,9 @@ class GameDetails extends PureComponent {
 
       <hr />
 
-
-    {
-      game.status !== 'pending' &&
-      <PlayerManual />
-    }
-    <div>{
-      game.status === 'pending' && <ImageSelection game = {game} userId = {userId} joinGame={this.joinGame} player={player} />  
-    }
     <div>
       {<Song game = {game.status}/>}
     </div>
-    </div>
-    <div className="container">
-    <div>
       {
         game.status !== 'pending' &&
         <PlayerManual />
@@ -168,6 +157,7 @@ class GameDetails extends PureComponent {
   
         }
       </div>
+      
 
     </Paper>)
   }
