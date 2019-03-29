@@ -1,15 +1,15 @@
-import {ADD_GAME, UPDATE_GAME, UPDATE_GAMES} from '../actions/games'
-import {USER_LOGOUT} from '../actions/users'
+import { ADD_GAME, UPDATE_GAME, UPDATE_GAMES } from '../actions/games'
+import { USER_LOGOUT } from '../actions/users'
 
 /*
 The state will contain the games in an object with the game ID as key
 */
 
-export default (state = null, {type, payload}) => {
+export default (state = null, { type, payload }) => {
   switch (type) {
     case USER_LOGOUT:
       return null
-    
+
     case ADD_GAME:
       return {
         ...state,
@@ -21,7 +21,10 @@ export default (state = null, {type, payload}) => {
         ...state,
         [payload.id]: payload
       }
-
+    case "UPDATE_PLAYER_SYMBOL_SUCCES":
+      return {
+        ...state
+      }
     case UPDATE_GAMES:
       return payload.reduce((games, game) => {
         games[game.id] = game

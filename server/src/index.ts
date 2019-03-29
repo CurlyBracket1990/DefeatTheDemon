@@ -60,11 +60,11 @@ io.use(socketIoJwtAuth.authenticate({ secret }, async (payload, done) => {
 }))
 
 io.on('connect', socket => {
-  const name = socket.request.user.email
-  console.log(`User ${name} just connected`)
+  const nickname = socket.request.user.nickname
+  console.log(`User ${nickname} just connected`)
 
   socket.on('disconnect', () => {
-    console.log(`User ${name} just disconnected`)
+    console.log(`User ${nickname} just disconnected`)
   })
 })
 

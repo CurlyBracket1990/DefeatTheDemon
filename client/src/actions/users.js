@@ -42,10 +42,10 @@ const updateUsers = (users) => ({
   payload: users
 })
 
-export const login = (email, password) => (dispatch) =>
+export const login = (nickname, password) => (dispatch) =>
 	request
 		.post(`${baseUrl}/logins`)
-    .send({email, password})
+    .send({nickname, password})
     .then(result => dispatch(userLoginSuccess(result.body)))
     .catch(err => {
     	if (err.status === 400) {
@@ -56,10 +56,10 @@ export const login = (email, password) => (dispatch) =>
     	}
     })
 
-export const signup = (email, password) => (dispatch) =>
+export const signup = (nickname, password) => (dispatch) =>
 	request
 		.post(`${baseUrl}/users`)
-		.send({ firstName: email, lastName: email, email, password })
+		.send({ firstName: nickname, lastName: nickname, nickname, password })
 		.then(result => {
 			dispatch(userSignupSuccess())
 		})

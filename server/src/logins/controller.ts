@@ -5,7 +5,7 @@ import User from '../users/entity'
 
 class AuthenticatePayload {
   @IsString()
-  email: string
+  nickname: string
 
   @IsString()
   password: string
@@ -16,10 +16,10 @@ export default class LoginController {
 
   @Post('/logins')
   async authenticate(
-    @Body() { email, password }: AuthenticatePayload
+    @Body() { nickname, password }: AuthenticatePayload
   ) {
-    const user = await User.findOne({ where: { email } })
-    if (!user || !user.id) throw new BadRequestError('A user with this email does not exist')
+    const user = await User.findOne({ where: { nickname } })
+    if (!user || !user.id) throw new BadRequestError('A user with this nickname does not exist')
 
     if (!await user.checkPassword(password)) throw new BadRequestError('The password is not correct')
 

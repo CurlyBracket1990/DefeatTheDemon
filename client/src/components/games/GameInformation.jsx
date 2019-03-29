@@ -12,7 +12,7 @@ export default class GameInformation extends PureComponent {
                 <p>Current level: {game.currentLevel}</p>
                 {game.turn === "x" ? <p>Make a move player 1!</p> : <p>Make a move player 2!</p>}
                 <p>Moves left: {game.totalMoves}</p>
-                <p>Enemys left: {game.enemyCount}</p>
+                <p>Enemies left: {game.enemyCount}</p>
             </div>
         )
     }
