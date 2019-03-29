@@ -15,7 +15,7 @@ class SignupPage extends PureComponent {
 		)
 
 		return (
-			<div>
+			<div style={{color: "white"}}>
 				<h1>Sign up</h1>
 
 				<SignupForm onSubmit={this.handleSubmit} />

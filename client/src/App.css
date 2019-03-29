@@ -4,7 +4,10 @@
 
 .main {
   background-image: url('./images/terrains/lava');
-  height: 1000px;
+  height: auto;
+  /* min-height: 1000px; */
+  display: flex;
+  justify-content: center;
 }
 
 .App-logo {

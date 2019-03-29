@@ -103,7 +103,7 @@ export default class GameController {
   @Patch('/games/:id([0-9]+)/update')
   async updatePlayerSymbol(
     @Param('id') gameId: number,
-    @Body() body: PlayerObject
+    @Body() body
   ) {
     const game = await Game.findOneById(gameId)
     if (game) {
@@ -195,7 +195,7 @@ export default class GameController {
 
     }
     else if (game.totalMoves < 1) {
-      console.log(game.totalMoves)
+      
       game.status = 'Game over!'
     }
     else {
