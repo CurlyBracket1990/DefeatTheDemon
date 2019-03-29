@@ -18,7 +18,7 @@ import demonFrontImage from '../../images/enemies/demonFront.png'
 import demonBackImage from '../../images/enemies/demonBack.png'
 import necroImage from '../../images/champions/necro.png'
 import monkImage from '../../images/champions/monk.png'
-import terrainImage from '../../images/terrains/terrain1.png'
+import terrainImage from '../../images/terrains/terrain2.png'
 import PlayerManual from './PlayerManual'
 import GameInformation from './GameInformation'
 import ImageSelection from './ImageSelection';
