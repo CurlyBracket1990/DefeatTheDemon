@@ -1,6 +1,15 @@
+# This is our result for the second project week (week 7) of the Codaisseur academy.
+
+The goal was to make a basic multiplayer game using websockets.
+As framework we got a working game of tic-tac-toe which we expended to a demon hunting game.
+
+As a team it is your goal to defeat all the enemies on the board by walking towards them and clicking on them.
+There is a catch to it though, you have a set amount of moves (based on the amount of enemies) and the enemies can't be defeated when they face towards the direction you are coming from.
+
 # Multiplayer Demon Hunt
 
-This repo contains a frontend and backend for a multiplayer Demon Hunt game. It uses Typescript, Koa, routing-controllers and TypeORM in the backend and React/Redux in the frontend. The backend exposes a REST API but also sends messages over websockets using SocketIO. 
+This repo contains a frontend and backend for a tactical multiplayer Demon Hunt game. It uses Typescript, Koa, routing-controllers and TypeORM in the backend and React/Redux in the frontend. The backend exposes a REST API but also sends messages over websockets using SocketIO. 
+
 
 ## Getting Started
 
