@@ -22,7 +22,7 @@
     "@types/node": "^11.11.7",
     "@types/socket.io": "^1.4.32",
     "bcrypt": "^3.0.4",
-    "jsonwebtoken": "^8.2.0",
+    "jsonwebtoken": "^9.0.0",
     "kcors": "^2.2.1",
     "koa": "^2.5.0",
     "koa-bodyparser": "^4.2.0",
